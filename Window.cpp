@@ -29,10 +29,6 @@ Window::Window()
 
 	cameraMoveSpeed = 0.0f;
 
-	deltaTime = 0.0f;
-	lastFrame = 0.0f;
-	currentFrame = 0.0f;
-
 	lastPositionX = 0.0f;
 	lastPositionY = 0.0f;
 
@@ -109,6 +105,7 @@ void Window::WindowStillRunning()
 		glfwSetScrollCallback(openGLwindow, MouseScrollCallback);
 
 		ProcessInput(openGLwindow);
+
 		UseSkybox();
 
 		glfwSwapBuffers(openGLwindow); // Removing this will throw an exception error
@@ -331,6 +328,7 @@ void Window::UseSkybox()
 	// Use the skybox shader files for me
 	shaderProgram->InitializeShaderProgram(vertexShaderLoader[1], fragmentShaderLoader[1]);
 
+	skybox->ChangeSkybox();
 	skybox->UseShaderProgramForSkybox(800.0f / 600.0f, 0.1f, 100.0f);
 
 	glDepthFunc(GL_LESS);

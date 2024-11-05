@@ -31,6 +31,8 @@ public:
 
 	void SetCubeObject();
 	void SetCubeTexture();
+
+	void ChangeSkybox();
 	void UseShaderProgramForReflectiveCube(float aspect_ratio, float near_plane, float far_plane);
 
 	void UseShaderProgramForPersonCube(float aspect_ratio, float near_plane, float far_plane);
@@ -39,6 +41,8 @@ public:
 	static bool isTextureInverted;
 
 private:
+	float skyboxDeltaTime;
+
 	unsigned int skyboxVAO, skyboxVBO;
 	array<unsigned int, 2> cubeVAO, cubeVBO;
 
@@ -46,6 +50,11 @@ private:
 	unsigned int cubeTexture;
 
 	vector<string> skyboxTextures;
+	vector<string> skyboxTextures2;
+	vector<string> skyboxTextures3;
+	vector<string> skyboxTextures4;
+	vector<string> skyboxTextures5;
+	vector<string> skyboxTextures6;
 
 	unsigned char* skyboxData;
 	unsigned char* cubeData;

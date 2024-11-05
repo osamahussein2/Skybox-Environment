@@ -34,6 +34,8 @@ Skybox::Skybox()
 	modelMatrix = mat4(0.0f);
 	projectionMatrix = mat4(0.0f);
 	viewMatrix = mat4(0.0f);
+
+	skyboxDeltaTime = 0.0f;
 }
 
 Skybox::~Skybox()
@@ -116,12 +118,52 @@ void Skybox::SetSkyboxObject()
 	glEnableVertexAttribArray(0);
 
 	// Push back the skybox textures vector here
-	skyboxTextures.push_back("Textures/Skybox/DubaiSkyboxBack.jpg");
-	skyboxTextures.push_back("Textures/Skybox/DubaiSkyboxBack.jpg");
-	skyboxTextures.push_back("Textures/Skybox/DubaiSkyboxBack.jpg");
-	skyboxTextures.push_back("Textures/Skybox/DubaiSkyboxBack.jpg");
-	skyboxTextures.push_back("Textures/Skybox/DubaiSkyboxBack.jpg");
-	skyboxTextures.push_back("Textures/Skybox/DubaiSkyboxBack.jpg");
+	skyboxTextures.push_back("Textures/Skybox/DubaiSkybox1.jpg");
+	skyboxTextures.push_back("Textures/Skybox/DubaiSkybox1.jpg");
+	skyboxTextures.push_back("Textures/Skybox/DubaiSkybox1.jpg");
+	skyboxTextures.push_back("Textures/Skybox/DubaiSkybox1.jpg");
+	skyboxTextures.push_back("Textures/Skybox/DubaiSkybox1.jpg");
+	skyboxTextures.push_back("Textures/Skybox/DubaiSkybox1.jpg");
+
+	// Push back the skybox textures vector here
+	skyboxTextures2.push_back("Textures/Skybox/DubaiSkybox2.jpg");
+	skyboxTextures2.push_back("Textures/Skybox/DubaiSkybox2.jpg");
+	skyboxTextures2.push_back("Textures/Skybox/DubaiSkybox2.jpg");
+	skyboxTextures2.push_back("Textures/Skybox/DubaiSkybox2.jpg");
+	skyboxTextures2.push_back("Textures/Skybox/DubaiSkybox2.jpg");
+	skyboxTextures2.push_back("Textures/Skybox/DubaiSkybox2.jpg");
+
+	// Push back the skybox textures vector here
+	skyboxTextures3.push_back("Textures/Skybox/DubaiSkybox3.jpg");
+	skyboxTextures3.push_back("Textures/Skybox/DubaiSkybox3.jpg");
+	skyboxTextures3.push_back("Textures/Skybox/DubaiSkybox3.jpg");
+	skyboxTextures3.push_back("Textures/Skybox/DubaiSkybox3.jpg");
+	skyboxTextures3.push_back("Textures/Skybox/DubaiSkybox3.jpg");
+	skyboxTextures3.push_back("Textures/Skybox/DubaiSkybox3.jpg");
+
+	// Push back the skybox textures vector here
+	skyboxTextures4.push_back("Textures/Skybox/DubaiSkybox4.jpg");
+	skyboxTextures4.push_back("Textures/Skybox/DubaiSkybox4.jpg");
+	skyboxTextures4.push_back("Textures/Skybox/DubaiSkybox4.jpg");
+	skyboxTextures4.push_back("Textures/Skybox/DubaiSkybox4.jpg");
+	skyboxTextures4.push_back("Textures/Skybox/DubaiSkybox4.jpg");
+	skyboxTextures4.push_back("Textures/Skybox/DubaiSkybox4.jpg");
+
+	// Push back the skybox textures vector here
+	skyboxTextures5.push_back("Textures/Skybox/DubaiSkybox5.jpg");
+	skyboxTextures5.push_back("Textures/Skybox/DubaiSkybox5.jpg");
+	skyboxTextures5.push_back("Textures/Skybox/DubaiSkybox5.jpg");
+	skyboxTextures5.push_back("Textures/Skybox/DubaiSkybox5.jpg");
+	skyboxTextures5.push_back("Textures/Skybox/DubaiSkybox5.jpg");
+	skyboxTextures5.push_back("Textures/Skybox/DubaiSkybox5.jpg");
+
+	// Push back the skybox textures vector here
+	skyboxTextures6.push_back("Textures/Skybox/DubaiSkybox6.jpg");
+	skyboxTextures6.push_back("Textures/Skybox/DubaiSkybox6.jpg");
+	skyboxTextures6.push_back("Textures/Skybox/DubaiSkybox6.jpg");
+	skyboxTextures6.push_back("Textures/Skybox/DubaiSkybox6.jpg");
+	skyboxTextures6.push_back("Textures/Skybox/DubaiSkybox6.jpg");
+	skyboxTextures6.push_back("Textures/Skybox/DubaiSkybox6.jpg");
 }
 
 void Skybox::SetSkyboxTexture()
@@ -375,6 +417,161 @@ void Skybox::SetCubeTexture()
 
 	// Free the image memory after generating the texture and its corresponding mipmaps
 	stbi_image_free(cubeData);
+}
+
+void Skybox::ChangeSkybox()
+{
+	// If the skybox's delta time is less than 6 seconds, get the timer from the engine
+	if (skyboxDeltaTime < 6.0f)
+	{
+		skyboxDeltaTime = glfwGetTime();
+	}
+
+	/* If the skybox's delta time is more than or equal to 6 seconds since that's when it's reached the last vector of
+	textures, reset the skybox delta timer back to 0 and reuse the skybox textures from the beginning */
+	else if (skyboxDeltaTime >= 6.0f)
+	{
+		skyboxDeltaTime = 0.0f;
+		glfwSetTime(skyboxDeltaTime);
+	}
+
+	// Loop through the first skybox textures
+	for (unsigned int i = 0; i < skyboxTextures.size(); i++)
+	{
+		if (skyboxDeltaTime >= 0.0f && skyboxDeltaTime < 1.0f)
+		{
+			skyboxData = stbi_load(skyboxTextures[i].c_str(), &width, &height, &nrChannels, 0);
+
+			if (skyboxData)
+			{
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
+					GL_UNSIGNED_BYTE, skyboxData);
+			}
+
+			else
+			{
+				cout << "This texture has failed to load!" << std::endl;
+			}
+
+			// Free the image memory after generating the texture and its corresponding mipmaps
+			stbi_image_free(skyboxData);
+		}
+	}
+
+	// Loop through the second skybox textures
+	for (unsigned int i = 0; i < skyboxTextures2.size(); i++)
+	{
+		if (skyboxDeltaTime >= 1.0f && skyboxDeltaTime < 2.0f)
+		{
+			skyboxData = stbi_load(skyboxTextures2[i].c_str(), &width, &height, &nrChannels, 0);
+
+				if (skyboxData)
+				{
+					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
+						GL_UNSIGNED_BYTE, skyboxData);
+				}
+
+				else
+				{
+					cout << "This texture has failed to load!" << std::endl;
+				}
+
+			// Free the image memory after generating the texture and its corresponding mipmaps
+			stbi_image_free(skyboxData);
+		}
+	}
+
+	// Loop through the third skybox textures
+	for (unsigned int i = 0; i < skyboxTextures3.size(); i++)
+	{
+		if (skyboxDeltaTime >= 2.0f && skyboxDeltaTime < 3.0f)
+		{
+			skyboxData = stbi_load(skyboxTextures3[i].c_str(), &width, &height, &nrChannels, 0);
+
+			if (skyboxData)
+			{
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
+					GL_UNSIGNED_BYTE, skyboxData);
+			}
+
+			else
+			{
+				cout << "This texture has failed to load!" << std::endl;
+			}
+
+			// Free the image memory after generating the texture and its corresponding mipmaps
+			stbi_image_free(skyboxData);
+		}
+	}
+
+	// Loop through the fourth skybox textures
+	for (unsigned int i = 0; i < skyboxTextures4.size(); i++)
+	{
+		if (skyboxDeltaTime >= 3.0f && skyboxDeltaTime < 4.0f)
+		{
+			skyboxData = stbi_load(skyboxTextures4[i].c_str(), &width, &height, &nrChannels, 0);
+
+			if (skyboxData)
+			{
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
+					GL_UNSIGNED_BYTE, skyboxData);
+			}
+
+			else
+			{
+				cout << "This texture has failed to load!" << std::endl;
+			}
+
+			// Free the image memory after generating the texture and its corresponding mipmaps
+			stbi_image_free(skyboxData);
+		}
+	}
+
+	// Loop through the fifth skybox textures
+	for (unsigned int i = 0; i < skyboxTextures5.size(); i++)
+	{
+		if (skyboxDeltaTime >= 4.0f && skyboxDeltaTime < 5.0f)
+		{
+			skyboxData = stbi_load(skyboxTextures5[i].c_str(), &width, &height, &nrChannels, 0);
+
+			if (skyboxData)
+			{
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
+					GL_UNSIGNED_BYTE, skyboxData);
+			}
+
+			else
+			{
+				cout << "This texture has failed to load!" << std::endl;
+			}
+
+			// Free the image memory after generating the texture and its corresponding mipmaps
+			stbi_image_free(skyboxData);
+		}
+	}
+
+	// Loop through the sixth and final skybox textures
+	for (unsigned int i = 0; i < skyboxTextures6.size(); i++)
+	{
+		if (skyboxDeltaTime >= 5.0f && skyboxDeltaTime < 6.0f)
+		{
+			skyboxData = stbi_load(skyboxTextures6[i].c_str(), &width, &height, &nrChannels, 0);
+
+			if (skyboxData)
+			{
+				glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB,
+					GL_UNSIGNED_BYTE, skyboxData);
+			}
+
+			else
+			{
+				cout << "This texture has failed to load!" << std::endl;
+			}
+
+			// Free the image memory after generating the texture and its corresponding mipmaps
+			stbi_image_free(skyboxData);
+		}
+	}
 }
 
 void Skybox::UseShaderProgramForReflectiveCube(float aspect_ratio, float near_plane, float far_plane)

@@ -27,7 +27,7 @@ int main()
 	ShaderProgram shaderProgram;
 
 	// Just initialize the OpenGL window by filling in the right parameters below
-	window.InitializeOpenGLwindow(1280, 960, "OpenGL Practice", NULL, NULL);
+	window.InitializeOpenGLwindow(1280, 960, "Skybox Environment", NULL, NULL);
 
 	for (unsigned int i = 0; i < vertexShaderLoader.size(); i++)
 	{

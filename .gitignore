@@ -16,6 +16,8 @@
 *.idb
 *.iobj
 *.ipdb
+*.ipch
+*.pdb
 
 # Compiled Object files
 *.slo

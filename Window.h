@@ -25,7 +25,6 @@ public:
 	// Get the keyboard input whenever we want to close the window
 	void ProcessInput(GLFWwindow* window);
 
-	void IncludeFrameBufferMethods();
 	void UseSkybox();
 
 private:
